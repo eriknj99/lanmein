@@ -1,13 +1,22 @@
-port=22 #The ssh port of the host
-scanRange="192.168.1-5.1-255" #The IP range to scan (nmap format)
-username="user" #The username to login with
+#!/bin/bash
+port=6525 #The ssh port of the host
+scanRange="10.2-3.2-3.2-255" #The IP range to scan (nmap format)
+username="erik" #The username to login with
 
 #Make sure last exists
 touch last
 
-#Get the contents of last
-lastIP=$(cat last)
-echo Last connected IP: $lastIP
+#Check to see if an IP address was given manually, if not use the last connected IP.
+if [ $# -eq 2 ]; then
+  if [ $1 == "-m" ]; then
+      lastIP=$2
+      echo -e "Given IP: " $lastIP
+  fi
+else
+  lastIP=$(cat last)
+  echo Last connected IP: $lastIP
+fi
+
 echo -e "Checking connection...\c"
 
 #Check if host is up on $lastIP:$port
